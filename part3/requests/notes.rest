@@ -1,11 +1,11 @@
-GET http://localhost:3001/api/notes/
+GET http://localhost:3001/api/notes/63297c9a5d712c4453dead6a
 ###
 
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "One"
+    "content": "JS is not Life"
 
     
 }
@@ -13,10 +13,10 @@ Content-Type: application/json
 DELETE http://localhost:3001/api/notes/6317b579538b8a8abbeec691
 ###
 
-PUT http://localhost:3001/api/notes/63190e9c2beea328071edefb
+PUT http://localhost:3001/api/notes/63297c9a5d712c4453dead6d
 Content-Type: application/json
 
 {
-    "content": "One",
-    "important": false
+    "content": "Async not working with update",
+    "important": true
   }

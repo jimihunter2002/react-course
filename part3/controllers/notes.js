@@ -6,40 +6,127 @@ const Note = require('../models/note');
 // app.use(express.json()); // for parsing objects into json
 // app.use(cors()); // allow cross origin requests
 
-notesRouter.get('/', (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes);
-  });
-  //response.send('<h1>Hello World!</h1>');
+// notesRouter.get('/', (request, response) => {
+//   Note.find({}).then(notes => {
+//     response.json(notes);
+//   });
+//   //response.send('<h1>Hello World!</h1>');
+// });
+
+//async/ await
+notesRouter.get('/', async (request, response) => {
+  const notes = await Note.find({});
+  response.json(notes);
 });
 
 //fetching a note from DB in the backend
-notesRouter.get('/:id', (request, response, next) => {
-  Note.findById(request.params.id)
-    .then(note => {
-      if (note) {
-        response.json(note);
-      } else {
-        response.status(404).json({ error: 'note did not exist' });
-      }
-    })
-    .catch(err => next(err));
+// notesRouter.get('/:id', (request, response, next) => {
+//   Note.findById(request.params.id)
+//     .then(note => {
+//       if (note) {
+//         response.json(note);
+//       } else {
+//         response.status(404).json({ error: 'note did not exist' });
+//       }
+//     })
+//     .catch(err => next(err));
+// });
+
+//async/ await get
+// notesRouter.get('/:id', async (request, response, next) => {
+//   try {
+//     const note = await Note.findById(request.params.id);
+//     if (note) {
+//       response.json(note);
+//     } else {
+//       response.status(404).json({ error: 'note did not exist' });
+//     }
+//   } catch (exception) {
+//     next(exception);
+//   }
+// });
+
+// remove trycatch from get request using express-async-errors
+notesRouter.get('/:id', async (request, response) => {
+  const note = await Note.findById(request.params.id);
+  if (note) {
+    response.json(note);
+  } else {
+    response.status(404).json({ error: 'note did not exist' });
+  }
 });
 
 //deleting resource
-notesRouter.delete('/:id', (request, response, next) => {
-  Note.findByIdAndRemove(request.params.id)
-    .then(note => {
-      if (note) {
-        response.status(204).end();
-      } else {
-        response.status(404).send({ message: 'note did not exist' });
-      }
-    })
-    .catch(err => next(err));
+// notesRouter.delete('/:id', (request, response, next) => {
+//   Note.findByIdAndRemove(request.params.id)
+//     .then(note => {
+//       if (note) {
+//         response.status(204).end();
+//       } else {
+//         response.status(404).send({ message: 'note did not exist' });
+//       }
+//     })
+//     .catch(err => next(err));
+// });
+
+//async/await delete
+// notesRouter.delete('/:id', async (request, response, next) => {
+//   try {
+//     await Note.findByIdAndRemove(request.params.id);
+//     response.status(204).end();
+//   } catch (exception) {
+//     next(exception);
+//   }
+// });
+
+//remove try catch with express-async-error
+notesRouter.delete('/:id', async (request, response) => {
+  await Note.findByIdAndRemove(request.params.id);
+  response.status(204).end();
 });
 
-notesRouter.put('/:id', (req, res, next) => {
+// notesRouter.put('/:id', (req, res, next) => {
+//   const body = req.body;
+
+//   const note = {
+//     content: body.content,
+//     important: body.important,
+//   };
+
+//   Note.findByIdAndUpdate(req.params.id, note, {
+//     new: true,
+//     runValidators: true,
+//     context: 'query',
+//   })
+//     .then(updatedNote => {
+//       res.json(updatedNote);
+//     })
+//     .catch(err => next(err));
+// });
+
+//update async await
+// notesRouter.put('/:id', async (req, res, next) => {
+//   const body = req.body;
+
+//   const note = {
+//     content: body.content,
+//     important: body.important,
+//   };
+
+//   try {
+//     const updatedNote = await Note.findByIdAndUpdate(req.params.id, note, {
+//       new: true,
+//       runValidators: true,
+//       context: 'query',
+//     });
+//     res.status(202).json(updatedNote);
+//   } catch (exception) {
+//     next(exception);
+//   }
+// });
+
+//remove trycatch from async/await update using express-async-errors
+notesRouter.put('/:id', async (req, res) => {
   const body = req.body;
 
   const note = {
@@ -47,15 +134,12 @@ notesRouter.put('/:id', (req, res, next) => {
     important: body.important,
   };
 
-  Note.findByIdAndUpdate(req.params.id, note, {
+  const updatedNote = await Note.findByIdAndUpdate(req.params.id, note, {
     new: true,
     runValidators: true,
     context: 'query',
-  })
-    .then(updatedNote => {
-      res.json(updatedNote);
-    })
-    .catch(err => next(err));
+  });
+  res.status(202).json(updatedNote);
 });
 
 // app.get('/api/notes', (request, response) => {
@@ -64,13 +148,50 @@ notesRouter.put('/:id', (req, res, next) => {
 //   });
 // });
 
-notesRouter.post('/', (request, response, next) => {
+// notesRouter.post('/', (request, response, next) => {
+//   const body = request.body;
+//   if (!body.content) {
+//     return response.status(400).json({
+//       error: 'content missing',
+//     });
+//   }
+
+//   const note = Note({
+//     content: body.content,
+//     important: body.important || false,
+//     date: new Date(),
+//   });
+
+//   note
+//     .save()
+//     .then(savedNote => {
+//       // response.json(note);
+//       response.status(201).json(savedNote);
+//     })
+//     .catch(err => next(err));
+// });
+
+//post async/await
+// notesRouter.post('/', async (request, response, next) => {
+//   const body = request.body;
+
+//   const note = Note({
+//     content: body.content,
+//     important: body.important || false,
+//     date: new Date(),
+//   });
+
+//   try {
+//     const savedNote = await note.save();
+//     response.status(201).json(savedNote);
+//   } catch (exception) {
+//     next(exception);
+//   }
+// });
+
+//remove trycatch async await for express api call
+notesRouter.post('/', async (request, response) => {
   const body = request.body;
-  if (!body.content) {
-    return response.status(400).json({
-      error: 'content missing',
-    });
-  }
 
   const note = Note({
     content: body.content,
@@ -78,13 +199,8 @@ notesRouter.post('/', (request, response, next) => {
     date: new Date(),
   });
 
-  note
-    .save()
-    .then(savedNote => {
-      // response.json(note);
-      response.json(savedNote);
-    })
-    .catch(err => next(err));
+  const savedNote = await note.save();
+  response.status(201).json(savedNote);
 });
 
 // app.use(errorHandler); // this should be the last middleware

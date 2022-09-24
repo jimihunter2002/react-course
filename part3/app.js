@@ -1,3 +1,4 @@
+require('express-async-errors');
 const cors = require('cors');
 const config = require('./utils/config');
 const express = require('express');

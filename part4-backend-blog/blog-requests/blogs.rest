@@ -13,3 +13,14 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:3003/api/blogs/6320d085ec587af35beec81e
+###
+
+PUT http://localhost:3003/api/blogs/632eefd66b05eaf2d22454c3
+Content-Type: application/json
+
+{
+    "title": "Updated Title: Type wars",
+    "author": "Robert C. Martin",
+    "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    "likes": 1
+}

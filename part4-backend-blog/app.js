@@ -1,3 +1,4 @@
+require('express-async-errors');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -9,7 +10,7 @@ const middleware = require('./utils/middleware');
 const app = express();
 
 const mongoUrl = `${config.MONGODB_URI_START}${config.USERNAME}:${config.PASSWORD}${config.MONGODB_URI_END}`;
-
+console.log(mongoUrl);
 mongoose
   .connect(mongoUrl)
   .then(() => {
