@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const supertest = require('supertest');
 const app = require('../app');
 const Blog = require('../models/blog');
@@ -96,6 +96,34 @@ describe('viewing a specific blog', () => {
 
 describe('addition of a new note', () => {
   test('succeeds with valid data', async () => {
+    const userDetails = {
+      username: process.env.TESTUSER,
+      password: process.env.SECRET,
+    };
+
+    const apiResponse = await api.post('/api/login').send(userDetails);
+    const token = apiResponse._body.token;
+    const newBlog = {
+      title: 'add a new blog',
+      author: 'Fullstack Author',
+      url: 'http://fullstack.author.com/',
+      likes: 1,
+    };
+    console.log('token: ', token);
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `bearer ${token}`)
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+    const blogsAtEnd = await helper.blogsInDb();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
+
+    const contents = blogsAtEnd.map(n => n.title);
+    expect(contents).toContain('add a new blog');
+  });
+  //new tests
+  test('does not succeed with bearer token data', async () => {
     const newBlog = {
       title: 'add a new blog',
       author: 'Tinubu Adekunle',
@@ -106,13 +134,10 @@ describe('addition of a new note', () => {
     await api
       .post('/api/blogs')
       .send(newBlog)
-      .expect(201)
+      .expect(401)
       .expect('Content-Type', /application\/json/);
     const blogsAtEnd = await helper.blogsInDb();
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1);
-
-    const contents = blogsAtEnd.map(n => n.title);
-    expect(contents).toContain('add a new blog');
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
   });
 
   test('returns 400 statu code for creating blog with missing data', async () => {

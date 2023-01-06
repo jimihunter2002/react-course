@@ -12,7 +12,8 @@ Content-Type: application/json
 }
 ###
 
-DELETE http://localhost:3003/api/blogs/6320d085ec587af35beec81e
+DELETE http://localhost:3003/api/blogs/6367b89b7b904941388a92c0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzNjZkMTQxZTQzODZjY2U3OTE0ZTMxMyIsImlhdCI6MTY3MzAxNTMzMywiZXhwIjoxNjczMDE4OTMzfQ.WfJ-UaSK3MgHg4M8BBbusAII-Eu1aiUu84tNpkEv-Nc
 ###
 
 PUT http://localhost:3003/api/blogs/632eefd66b05eaf2d22454c3
@@ -22,5 +23,29 @@ Content-Type: application/json
     "title": "Updated Title: Type wars",
     "author": "Robert C. Martin",
     "url": "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    "likes": 1
+    "likes": 3
+}
+
+####
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title" : "Ball pit blogger",
+    "author": "Odia Ajuri",
+    "url": "www.ck.com",
+    "likes" : 1,
+    "userId":"6366d141e4386cce7914e313"
+}
+
+###
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZHJvb3QiLCJpZCI6IjYzNjZkMTQxZTQzODZjY2U3OTE0ZTMxNSIsImlhdCI6MTY3MzAxNDY1NCwiZXhwIjoxNjczMDE4MjU0fQ.Z8gbqbneD4r0gK3cGsW2kmDed1oZ1GPMz-oEtkWxHWM
+
+{
+    "title": "Blog create with token",
+    "author": "Chinua Achebe",
+    "url": "http://achebe.chinua.com",
+    "likes": 17
 }
