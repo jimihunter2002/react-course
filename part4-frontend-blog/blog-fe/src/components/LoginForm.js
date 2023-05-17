@@ -7,6 +7,7 @@ const LoginForm = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showLogin, setShowLogin] = useState(true);
 
   const handleLogin = async event => {
     event.preventDefault();
@@ -26,32 +27,43 @@ const LoginForm = ({ setUser }) => {
     }
   };
 
+  const showLoginForm = () => {
+    setShowLogin(false);
+  };
+
+  const cancelForm = () => {
+    setShowLogin(true);
+  };
   return (
     <div>
       <Notification message={errorMessage} className='error' />
-      <h2>log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor='username'>username</label>
-          <input
-            name='username'
-            type='text'
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
+      {showLogin ? (
+        <button onClick={showLoginForm}>log in to application</button>
+      ) : (
+        <form onSubmit={handleLogin}>
+          <div>
+            <label htmlFor='username'>username</label>
+            <input
+              name='username'
+              type='text'
+              value={username}
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
 
-        <div>
-          <label htmlFor='password'>password</label>
-          <input
-            name='password'
-            type='password'
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type='submit'>login</button>
-      </form>
+          <div>
+            <label htmlFor='password'>password</label>
+            <input
+              name='password'
+              type='password'
+              value={password}
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+          <button type='submit'>login</button>
+          <input type='button' value='cancel' onClick={cancelForm} />
+        </form>
+      )}
     </div>
   );
 };
