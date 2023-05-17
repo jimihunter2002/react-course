@@ -9,6 +9,12 @@ import axios from 'axios';
 const baseUrl = '/api/notes'; // relative path after moving frontend into backend folder
 // both FE and BE are on the same address
 
+let token = null;
+
+const setToken = newToken => {
+  token = `bearer ${newToken}`;
+};
+
 const getAll = () => {
   const nonExisting = {
     id: 10000,
@@ -20,9 +26,14 @@ const getAll = () => {
   return request.then(response => response.data.concat(nonExisting));
 };
 
-const create = newObject => {
-  const request = axios.post(baseUrl, newObject);
-  return request.then(response => response.data);
+const create = async newObject => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(baseUrl, newObject, config);
+  return response.data;
+  // const request = await axios.post(baseUrl, newObject, config);
+  // return request.then(response => response.data);
 };
 
 const update = (id, newObject) => {
@@ -35,4 +46,5 @@ export default {
   getAll,
   create,
   update,
+  setToken,
 };

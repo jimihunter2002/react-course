@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import Note from './components/Note';
+import Note from '../src/components/Note';
 
 const App = () => {
   const [notes, setNotes] = useState([]);

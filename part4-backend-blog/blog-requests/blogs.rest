@@ -41,11 +41,22 @@ Content-Type: application/json
 ###
 post http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZHJvb3QiLCJpZCI6IjYzNjZkMTQxZTQzODZjY2U3OTE0ZTMxNSIsImlhdCI6MTY3MzAxNDY1NCwiZXhwIjoxNjczMDE4MjU0fQ.Z8gbqbneD4r0gK3cGsW2kmDed1oZ1GPMz-oEtkWxHWM
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZHJvb3QiLCJpZCI6IjYzNjZkMTQxZTQzODZjY2U3OTE0ZTMxNSIsImlhdCI6MTY4NDMyNzU1MCwiZXhwIjoxNjg0MzMxMTUwfQ.5hPuDRQYBF27qSt24b5iIwyT2Xt1fIYqwkNXaQKposo
 
 {
     "title": "Blog create with token",
     "author": "Chinua Achebe",
     "url": "http://achebe.chinua.com",
     "likes": 17
+}
+###
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNlY29uZHJvb3QiLCJpZCI6IjYzNjZkMTQxZTQzODZjY2U3OTE0ZTMxNSIsImlhdCI6MTY4NDMyNzU1MCwiZXhwIjoxNjg0MzMxMTUwfQ.5hPuDRQYBF27qSt24b5iIwyT2Xt1fIYqwkNXaQKposo
+
+{
+    "title": "",
+    "author": "",
+    "url": ""
+    
 }

@@ -23,7 +23,6 @@ const App = () => {
     blogService
       .getAll()
       .then(initialBlogs => {
-        console.log(initialBlogs);
         setBlogs(initialBlogs);
       })
       .catch(err => setErrorNotify(err.response));

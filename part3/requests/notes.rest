@@ -1,11 +1,13 @@
-GET http://localhost:3001/api/notes/63297c9a5d712c4453dead6a
+GET http://localhost:3001/api/notes/
 ###
 
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "JS is not Life"
+    "content": "Salawa Abeni Waka",
+    "important":true,
+    "userId": "633076a4d1f4cb505dc7b4e9"
 
     
 }
@@ -18,5 +20,15 @@ Content-Type: application/json
 
 {
     "content": "Async not working with update",
+    "important": true
+  }
+###
+
+  post http://localhost:3001/api/notes
+  Content-Type:  application/json
+  Authorization: bearer
+
+  {
+    "content": "single page Apps use token authorization",
     "important": true
   }
