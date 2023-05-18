@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
 import Note from './components/Note';
+import NoteForm from './components/NoteForm';
 import Notification from './components/Notification';
+import Togglable from './components/Togglable';
+import loginService from './services/login';
 import noteService from './services/notes';
 
 const App = () => {
@@ -10,9 +13,10 @@ const App = () => {
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  // const [loginVisible, setLoginVisible] = useState(false);
 
   const hook = () => {
     noteService.getAll().then(initalNotes => {
@@ -35,6 +39,14 @@ const App = () => {
       setNotes(notes.concat(response));
       setNewNote('');
     });
+  };
+
+  const handleUsernameChange = event => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = event => {
+    setPassword(event.target.value);
   };
 
   // const handleLogin = async event => {
@@ -109,12 +121,13 @@ const App = () => {
   //     <button type='submit'>login</button>
   //   </form>
   // );
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type='submit'>save</button>
-    </form>
-  );
+
+  // const noteForm = () => (
+  //   <form onSubmit={addNote}>
+  //     <input value={newNote} onChange={handleNoteChange} />
+  //     <button type='submit'>save</button>
+  //   </form>
+  // );
 
   const logoutUser = () => {
     console.log('USER: ', user);
@@ -128,6 +141,31 @@ const App = () => {
     </div>
   );
 
+  //handle login
+  const handleLogin = async event => {
+    event.preventDefault();
+
+    try {
+      const user = await loginService.login({ username, password });
+      //add user info to localstorage
+      window.localStorage.setItem('loggedNotAppuser', JSON.stringify(user));
+      noteService.setToken(user.token);
+      setUser(user);
+      setUsername('');
+      setPassword('');
+    } catch (exception) {
+      setErrorMessage('wrong credentials');
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  };
+
+  //try this for show or hide
+
+  // const hideWhenVisible = { display: loginVisible ? 'none' : '' };
+  // const showWhenVisible = { display: loginVisible ? '' : 'none' };
+
   return (
     <div>
       <h1>Notes app</h1>
@@ -138,12 +176,28 @@ const App = () => {
       Below state was passed from parent to child component and manipulated at the child
       level setUser
       */}
+
       {user === null ? (
-        <LoginForm setUser={setUser} />
+        <Togglable buttonLabel='login'>
+          <LoginForm
+            setUser={setUser}
+            handleUsernameChange={handleUsernameChange}
+            handlePasswordChange={handlePasswordChange}
+            username={username}
+            password={password}
+            handleLogin={handleLogin}
+          />
+        </Togglable>
       ) : (
         <div>
           <p>{user.name} logged in</p>
-          {noteForm()}
+          <Togglable buttonLabel='new note'>
+            <NoteForm
+              addNote={addNote}
+              handleNoteChange={handleNoteChange}
+              newNote={newNote}
+            />
+          </Togglable>
         </div>
       )}
       {/* {user === null && <LoginForm setUser={setUser} />} */}
