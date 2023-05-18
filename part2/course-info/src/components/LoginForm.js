@@ -1,46 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import noteService from '../services/notes';
 
-const LoginForm = ({
-  setUser,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password,
-  handleLogin,
-}) => {
-  //const [username, setUsername] = useState('');
-  //const [password, setPassword] = useState('');
+const LoginForm = ({ login }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   //const [errorMessage, setErrorMessage] = useState(null);
 
   const loginHook = () => {
     const loggedUserJson = window.localStorage.getItem('loggedNotAppuser');
     if (loggedUserJson) {
       const user = JSON.parse(loggedUserJson);
-      setUser(user);
+      //setUser(user);
       noteService.setToken(user.token);
     }
   };
-  useEffect(loginHook, [setUser]);
+  useEffect(loginHook, []);
 
-  // const handleLogin = async event => {
-  //   event.preventDefault();
-
-  //   try {
-  //     const user = await loginService.login({ username, password });
-  //     //add user info to localstorage
-  //     window.localStorage.setItem('loggedNotAppuser', JSON.stringify(user));
-  //     noteService.setToken(user.token);
-  //     setUser(user);
-  //     setUsername('');
-  //     setPassword('');
-  //   } catch (exception) {
-  //     setErrorMessage('wrong credentials');
-  //     setTimeout(() => {
-  //       setErrorMessage(null);
-  //     }, 5000);
-  //   }
-  // };
+  const handleLogin = event => {
+    event.preventDefault();
+    login({ username, password });
+    setUsername('');
+    setPassword('');
+  };
 
   return (
     <div>
@@ -53,7 +34,7 @@ const LoginForm = ({
             id='username'
             type='text'
             value={username}
-            onChange={handleUsernameChange}
+            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
@@ -63,7 +44,7 @@ const LoginForm = ({
             id='password'
             type='password'
             value={password}
-            onChange={handlePasswordChange}
+            onChange={({ target }) => setPassword(target.value)}
           />
         </div>
 
