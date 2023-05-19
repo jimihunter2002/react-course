@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import noteService from '../services/notes';
+import React, { useState } from 'react';
 
 const LoginForm = ({ login }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   //const [errorMessage, setErrorMessage] = useState(null);
 
-  const loginHook = () => {
-    const loggedUserJson = window.localStorage.getItem('loggedNotAppuser');
-    if (loggedUserJson) {
-      const user = JSON.parse(loggedUserJson);
-      //setUser(user);
-      noteService.setToken(user.token);
-    }
-  };
-  useEffect(loginHook, []);
+  // const loginHook = () => {
+  //   const loggedUserJson = window.localStorage.getItem('loggedNotAppuser');
+  //   if (loggedUserJson) {
+  //     const user = JSON.parse(loggedUserJson);
+  //     setUser(user);
+  //     noteService.setToken(user.token);
+  //   }
+  // };
+  // useEffect(loginHook, [setUser]);
 
   const handleLogin = event => {
     event.preventDefault();

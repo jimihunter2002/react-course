@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
 import Note from './components/Note';
@@ -17,6 +17,15 @@ const App = () => {
   // const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   // const [loginVisible, setLoginVisible] = useState(false);
+  const loginHook = () => {
+    const loggedUserJson = window.localStorage.getItem('loggedNotAppuser');
+    if (loggedUserJson) {
+      const user = JSON.parse(loggedUserJson);
+      setUser(user);
+      noteService.setToken(user.token);
+    }
+  };
+  useEffect(loginHook, []);
 
   const hook = () => {
     noteService.getAll().then(initalNotes => {
@@ -41,7 +50,10 @@ const App = () => {
   //   });
   // };
 
+  const NoteFormRef = useRef();
+
   const addNote = noteObj => {
+    NoteFormRef.current.toggleVisibility();
     noteService.create(noteObj).then(response => {
       setNotes(notes.concat(response));
     });
@@ -212,7 +224,7 @@ const App = () => {
       ) : (
         <div>
           <p>{user.name} logged in</p>
-          <Togglable buttonLabel='new note'>
+          <Togglable buttonLabel='new note' ref={NoteFormRef}>
             <NoteForm createNote={addNote} />
           </Togglable>
         </div>
