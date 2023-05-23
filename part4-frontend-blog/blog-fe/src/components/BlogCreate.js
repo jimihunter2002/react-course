@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogService';
 
-const BlogCreate = ({ setBlogs, blogs, setErrorNotify, setSuccessNotify }) => {
+const BlogCreate = ({ createBlog }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -14,38 +13,17 @@ const BlogCreate = ({ setBlogs, blogs, setErrorNotify, setSuccessNotify }) => {
       author,
       url,
     };
+    createBlog(BlogObject);
 
-    try {
-      blogService
-        .create(BlogObject)
-        .then(res => {
-          console.log(res);
-          setBlogs(blogs.concat(res));
-          setSuccessNotify(`a new blog ${title}! by ${author} added`);
-          setTimeout(() => {
-            setSuccessNotify(null);
-          }, 5000);
-
-          setTitle('');
-          setAuthor('');
-          setUrl('');
-        })
-        .catch(err => {
-          setErrorNotify(`User unable to create a new blog, check the data`);
-          setTimeout(() => {
-            setErrorNotify(null);
-          }, 5000);
-        });
-    } catch (error) {
-      setErrorNotify(`Service may not be available check the server`);
-      setTimeout(() => {
-        setErrorNotify(null);
-      }, 5000);
-    }
+    setTitle('');
+    setAuthor('');
+    setUrl('');
   };
+
   return (
     <div>
       <h2>create new</h2>
+
       <form onSubmit={handleCreate}>
         <div>
           <label htmlFor='title'>title:</label>
