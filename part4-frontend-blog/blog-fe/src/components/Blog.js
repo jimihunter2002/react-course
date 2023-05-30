@@ -40,20 +40,22 @@ const Blog = ({ blog, id, onUpdateLikes, onDeleteBlog }) => {
     // </li>
     <div>
       {buttonLabel === 'view' ? (
-        <div id={id} style={blogStyle}>
-          {blog.title}
+        <div id={id} style={blogStyle} className='blog-default'>
+          {blog.title} {blog.author}
           <span>&nbsp;</span>
           <button onClick={showOrHideDetails}>{buttonLabel}</button>
         </div>
       ) : (
-        <div id={id} style={blogStyle}>
+        <div id={id} style={blogStyle} className='blog-details'>
           {blog.title}
           <span>&nbsp;</span>
           <button onClick={showOrHideDetails}>{buttonLabel}</button> <br />
-          {blog.url}
+          <span>{blog.url}</span>
           <br />
-          {blog.likes}
-          <span>&nbsp;</span>
+          <span>
+            {blog.likes}
+            <span>&nbsp;</span>
+          </span>
           <button onClick={addLikes}>like</button>
           <br />
           {blog.user.name} <br />
