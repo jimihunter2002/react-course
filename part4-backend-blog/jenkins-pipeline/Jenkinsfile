@@ -1,0 +1,15 @@
+pipeline {
+
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+                sh 'echo $USER'
+                sh 'whoami'                
+                sh 'cd /var/lib/jenkins/workspace/'
+                
+                
+            }
+        }
+    }
+}
