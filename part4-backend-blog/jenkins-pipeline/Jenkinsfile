@@ -6,8 +6,8 @@ pipeline {
                 sh 'node --version'
                 sh 'echo $USER'
                 sh 'whoami' 
-                dir('cd /var/lib/jenkins/workspace/jimi-first-pipeline/part4-backend-blog'){
-                    sh 'pwd'
+                dir('part4-backend-blog'){
+                
                     sh 'npm install'
                 }               
                
